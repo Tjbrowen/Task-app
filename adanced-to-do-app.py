@@ -6,13 +6,52 @@ def main(page: Page):
    FG = '#3450A1'
    PINK ='#eb06ff'
 
+   def route_change(route):
+      page.views.clear()
+      page.views.append(
+         View(
+            "/",
+            [
+               container
+            ],
+         ),
+      )
+
+   tasks = Column()
+
    content=categories_card = Row(
+      scroll='auto'
       
+
    )
    categories = ['Business','Family', 'Friends']
-   for category in categories:
-      categories_card.controls
-
+   for i, category in enumerate (categories):
+      categories_card.controls.append(
+         Container(
+            border_radius=20,
+            bgcolor=BG,
+            width=170,
+            height=110,
+            padding=15,
+            content=Column(
+               controls=[
+                  Text('40 Tasks', color='white'),
+                  Text(category, color='white'),
+                 Container(
+                    width=160,
+                    height=5,
+                    bgcolor='white12',
+                    border_radius=20,
+                    padding=padding.only(right=i*30),
+                    content=Container(
+                       bgcolor=PINK,
+                    )
+                 )
+               ]
+            )
+            
+      )
+      )
    first_page_contents = Container(
       content=Column(
          controls=[
@@ -45,8 +84,19 @@ def main(page: Page):
             Container(
                padding=padding.only(top=10,bottom=20,),
                content=categories_card
+            ),
+            Container(height=20),
+            Text("TODAY'S TASKS", color='white'),
+            Stack(
+               controls=[
+                  tasks,
+                  FloatingActionButton(
+                     icon = icons.ADD,on_click=lambda _: page.go
+                     ('/create_task')
+                  )
+               ]
             )
-         ]
+         ],
       )
     )
 
@@ -86,6 +136,10 @@ def main(page: Page):
       )
    )
    page.add(container)
+   
+   page.on_route_change = route_change
+   page.go(page.route)
+
 
 app(target=main)
 
